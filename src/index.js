@@ -376,26 +376,26 @@ function modify_mac(lic_info, mac, output = true) {
   // Parse MAC address
   const mac_arr = mac.split(':');
   
-  // 创建mac_bin（原始MAC字节）
+  // Create mac_bin (original MAC bytes)
   const mac_bin = new Uint8Array(6);
   for (let i = 0; i < 6; i++) {
     mac_bin[i] = parseInt(mac_arr[i], 16);
   }
   
-  // 创建mac_hash - 这是关键部分，必须精确匹配PHP的行为
+  // Create mac_hash - this is critical, must match PHP behavior exactly
   const mac_hash = new Uint8Array(16);
   
-  // 首先初始化前6个值
+  // First initialize the first 6 values
   for (let i = 0; i < 6; i++) {
     mac_hash[i] = mac_bin[i] + i;
   }
   
-  // 然后计算剩余的值，关键是使用已更新的mac_hash值
+  // Then calculate remaining values, using the updated mac_hash values
   for (let i = 6; i < 16; i++) {
     mac_hash[i] = mac_hash[i % 6] + i;
   }
   
-  // 生成license字符串
+  // Generate license string
   let license = '';
   for (let i = 0; i < 8; i++) {
     const calc = (mac_hash[i] + mac_hash[i + 8]) & 0xFF;
@@ -406,12 +406,12 @@ function modify_mac(lic_info, mac, output = true) {
     console.log(`(license ${license})`);
   }
   
-  // 将license存储到lic_info中
+  // Store license in lic_info
   for (let i = 0; i < license.length; i++) {
     lic_info[0x40 + i] = license.charCodeAt(i);
   }
   
-  // 剩余部分填充0
+  // Fill the rest with zeros
   for (let i = license.length; i < 0x10; i++) {
     lic_info[0x40 + i] = 0;
   }
@@ -435,7 +435,7 @@ function modify_hash(lic_info, version) {
       tmp[i] = 0;
     }
     
-    // 生成0到0x7FFFFFFF之间的随机数
+    // Generate random number between 0 and 0x7FFFFFFF
     const hash = Math.floor(Math.random() * 0x7FFFFFFF);
     const hashStr = hash.toString();
     for (let i = 0; i < hashStr.length; i++) {
@@ -553,7 +553,7 @@ async function handleRequest(request) {
   }
 }
 
-// Setup Cloudflare Worker event listener
+// Entry point for Cloudflare Worker
 addEventListener('fetch', event => {
   event.respondWith(handleRequest(event.request));
 });
