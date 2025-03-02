@@ -4,7 +4,7 @@ A Cloudflare Worker that generates custom LotServer license files based on provi
 
 Test URL
 ```
-https://lotserverkeygen.loli.ac/keygen.php
+https://lotserverkeygen.loli.ac/keygen.php?mac=00:11:22:33:44:55&ver=1
 ```
 
 ## Features
