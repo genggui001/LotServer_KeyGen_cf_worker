@@ -2,6 +2,11 @@
 
 A Cloudflare Worker that generates custom LotServer license files based on provided MAC addresses.
 
+Test URL
+```
+https://lotserverkeygen.loli.ac/keygen.php
+```
+
 ## Features
 
 - Generate license files with custom MAC addresses
